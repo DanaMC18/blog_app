@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'topics#index'
+  # root 'topics#index'
+  root 'static_pages#root'
 
   resources :topics do 
     resources :pictures, :tags, :likes
