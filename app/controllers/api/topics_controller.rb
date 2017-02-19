@@ -1,7 +1,7 @@
 # require 'redcarpet'
 # require 'pry'
 
-class TopicsController < ApplicationController
+class Api::TopicsController < ApplicationController
   before_action :find_topic, only : [:edit, :update, :show, :delete]
 
   # Renders all Topics
