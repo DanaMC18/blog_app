@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Session from './components/session';
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = document.getElementById('root');
   ReactDOM.render(
-    <div>Hello World</div>, root
+    <Session/>, root
   );
 })

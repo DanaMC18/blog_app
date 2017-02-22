@@ -6,13 +6,16 @@ Rails.application.routes.draw do
   # root 'topics#index'
   root 'static_pages#root'
 
-  resources :topics do 
-    resources :pictures, :tags, :likes
-    resources :comments do 
-      resources :likes
-    end
+  namespace :api, default: {format: :json} do 
+    resource :session, only: [:create, :destroy]
   end
 
+  # resources :topics do 
+  #   resources :pictures, :tags, :likes
+  #   resources :comments do 
+  #     resources :likes
+  #   end
+  # end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

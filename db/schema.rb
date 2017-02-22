@@ -11,26 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222171248) do
+ActiveRecord::Schema.define(version: 20170222193332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
-    t.string   "author"
     t.text     "content"
     t.date     "date"
     t.integer  "topic_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
+
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "likes", force: :cascade do |t|
     t.integer  "topic_id"
     t.integer  "comment_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
+
+  add_index "likes", ["user_id"], name: "index_likes_on_user_id", using: :btree
 
   create_table "pictures", force: :cascade do |t|
     t.string   "url"
@@ -49,10 +54,28 @@ ActiveRecord::Schema.define(version: 20160222171248) do
   create_table "topics", force: :cascade do |t|
     t.string   "title"
     t.text     "content"
-    t.string   "author"
     t.date     "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
+  add_index "topics", ["user_id"], name: "index_topics_on_user_id", using: :btree
+
+  create_table "users", force: :cascade do |t|
+    t.string   "username",        null: false
+    t.string   "password_digest", null: false
+    t.boolean  "is_admin",        null: false
+    t.string   "session_token",   null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_foreign_key "comments", "topics"
+  add_foreign_key "comments", "users"
+  add_foreign_key "likes", "comments"
+  add_foreign_key "likes", "topics"
+  add_foreign_key "likes", "users"
+  add_foreign_key "tags", "topics"
+  add_foreign_key "topics", "users"
 end

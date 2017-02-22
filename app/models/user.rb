@@ -5,18 +5,20 @@ class User < ActiveRecord::Base
   
   validates :password_digest, :session_token, presence: true
   validates :username, presence: true, uniqueness: true
-  validates :password, length {minimum: 6, allow_nil: true}
+  validates :password, length: {minimum: 6, allow_nil: true}
   before_validation :ensure_session_token
 
   attr_reader :password
 
-  has_many :topics, :comments, :likes
+  has_many :topics
+  has_many :comments
+  has_many :likes
 
   def self.generate_session_token
     SecureRandom::urlsafe_base64(16)
   end
 
-  def :ensure_session_token
+  def ensure_session_token
     self.session_token ||= User.generate_session_token 
   end
 
@@ -25,7 +27,7 @@ class User < ActiveRecord::Base
     user && user.is_password?(password) ? user : nil
   end
 
-  def is_password(password)  
+  def is_password?(password)  
     # does the password entered on front end equal what is stored in password_digest
     BCrypt::Password.new(self.password_digest).is_password?(password)
   end
