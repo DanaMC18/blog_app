@@ -9551,10 +9551,14 @@ var Session = function (_React$Component) {
       } else {
         return _react2.default.createElement(
           'div',
-          null,
-          _react2.default.createElement('input', { type: 'text', placeholder: 'username', onChange: this.setUsername }),
-          _react2.default.createElement('input', { type: 'password', placeholder: 'password', onChange: this.setPassword }),
-          _react2.default.createElement('input', { type: 'submit', onClick: this.handleLogin })
+          { className: 'div-login' },
+          _react2.default.createElement('input', { type: 'text', placeholder: 'Username', onChange: this.setUsername }),
+          _react2.default.createElement('input', { type: 'password', placeholder: 'Password', onChange: this.setPassword }),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.handleLogin },
+            'Login'
+          )
         );
       }
     }
