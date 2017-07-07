@@ -2,11 +2,15 @@
 # require 'pry'
 
 class Api::TopicsController < ApplicationController
-  before_action :find_topic, only : [:edit, :update, :show, :delete]
+  # before_action :find_topic, only : [:edit, :update, :show, :delete]
 
   # Renders all Topics
   def index 
     @topics = Topic.all
+    
+    topic_list = @topics.map { |topic| { id: topic.id, title: topic.title, author: topic.user, date: topic.date, content: topic.content } }
+
+    render json: topic_list
   end
 
   # Renders individual Topic

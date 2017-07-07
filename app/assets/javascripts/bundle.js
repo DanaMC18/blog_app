@@ -9544,7 +9544,7 @@ var Session = function (_React$Component) {
           ),
           _react2.default.createElement(
             'button',
-            { type: 'submit', onClick: this.handleLogout },
+            { type: 'submit', onSubmit: this.handleLogout },
             'Logout'
           )
         );
@@ -9552,12 +9552,16 @@ var Session = function (_React$Component) {
         return _react2.default.createElement(
           'div',
           { className: 'div-login' },
-          _react2.default.createElement('input', { type: 'text', placeholder: 'Username', onChange: this.setUsername }),
-          _react2.default.createElement('input', { type: 'password', placeholder: 'Password', onChange: this.setPassword }),
           _react2.default.createElement(
-            'button',
-            { onClick: this.handleLogin },
-            'Login'
+            'form',
+            null,
+            _react2.default.createElement('input', { type: 'text', placeholder: 'Username', onChange: this.setUsername }),
+            _react2.default.createElement('input', { type: 'password', placeholder: 'Password', onChange: this.setPassword }),
+            _react2.default.createElement(
+              'button',
+              { onClick: this.handleLogin },
+              'Login'
+            )
           )
         );
       }
@@ -21828,12 +21832,169 @@ var _session = __webpack_require__(80);
 
 var _session2 = _interopRequireDefault(_session);
 
+var _topic_list = __webpack_require__(179);
+
+var _topic_list2 = _interopRequireDefault(_topic_list);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 document.addEventListener('DOMContentLoaded', function () {
   var root = document.getElementById('root');
-  _reactDom2.default.render(_react2.default.createElement(_session2.default, null), root);
+  _reactDom2.default.render(
+  // <Session/>, root
+  _react2.default.createElement(_topic_list2.default, null), root);
 });
+
+/***/ }),
+/* 179 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(52);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TopicList = function (_React$Component) {
+  _inherits(TopicList, _React$Component);
+
+  function TopicList(props) {
+    _classCallCheck(this, TopicList);
+
+    // runs constructor of the parent class and passes props into it
+    var _this = _possibleConstructorReturn(this, (TopicList.__proto__ || Object.getPrototypeOf(TopicList)).call(this, props));
+
+    _this.state = {
+      selectedTopic: null,
+      topicsList: null,
+      page: 1
+    };
+
+    _this.getTopics();
+    return _this;
+  }
+
+  _createClass(TopicList, [{
+    key: 'getTopics',
+    value: function getTopics() {
+      $.ajax({
+        method: 'GET',
+        url: 'api/topics',
+        success: function (data) {
+          this.setState({ topicsList: data });
+        }.bind(this), //binding here instead of inside the contructor like in session.jsx
+        //because of anonymous callback function on success
+        error: function (err) {
+          console.error(this.props.url, err.toString());
+        }.bind(this)
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+
+      if (this.state.selectedTopic) {
+        var selectedTopic = this.state.selectedTopic;
+
+        return _react2.default.createElement(
+          'div',
+          { className: 'div-topic' },
+          _react2.default.createElement(
+            'div',
+            { className: 'div-topic-container' },
+            _react2.default.createElement(
+              'time',
+              { className: 'topic-date' },
+              selectedTopic.date
+            ),
+            _react2.default.createElement(
+              'h2',
+              { className: 'topic-title' },
+              selectedTopic.title
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'topic-author' },
+              'By ',
+              selectedTopic.author
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'topic-content' },
+              ' ',
+              selectedTopic.content
+            )
+          )
+        );
+      }
+
+      var topics = this.state.topicsList;
+
+      if (topics) {
+        var topicListMarkup = topics.map(function (topic) {
+          return _react2.default.createElement(
+            'div',
+            { className: 'div-topic-container', key: topic.id },
+            _react2.default.createElement(
+              'time',
+              { className: 'topic-date' },
+              topic.date
+            ),
+            _react2.default.createElement(
+              'h2',
+              { className: 'topic-title' },
+              topic.title
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'topic-author' },
+              'By ',
+              topic.author.username
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('span', { className: 'topic-content',
+              dangerouslySetInnerHTML: { __html: topic.content.slice(0, 100) } })
+          );
+        });
+
+        return _react2.default.createElement(
+          'div',
+          { className: 'div-topic-list' },
+          _react2.default.createElement(
+            'div',
+            null,
+            topicListMarkup
+          )
+        );
+      }
+
+      return _react2.default.createElement(
+        'h1',
+        null,
+        'Loading...'
+      );
+    }
+  }]);
+
+  return TopicList;
+}(_react2.default.Component);
+
+exports.default = TopicList;
 
 /***/ })
 /******/ ]);

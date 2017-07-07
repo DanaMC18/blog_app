@@ -55,15 +55,17 @@ class Session extends React.Component{
       return (
         <div>
           <h2>Hello {this.state.user.user}</h2>
-          <button type="submit" onClick={this.handleLogout}>Logout</button>
+          <button type="submit" onSubmit={this.handleLogout}>Logout</button>
           </div>
       )
     } else {
       return (
         <div className="div-login">
-          <input type="text" placeholder="Username" onChange={this.setUsername} />
-          <input type="password" placeholder="Password" onChange={this.setPassword} />
-          <button onClick={this.handleLogin}>Login</button>
+          <form>
+            <input type="text" placeholder="Username" onChange={this.setUsername} />
+            <input type="password" placeholder="Password" onChange={this.setPassword} />
+            <button onClick={this.handleLogin}>Login</button>
+          </form>
         </div>
       )
     }

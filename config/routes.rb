@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   namespace :api, default: {format: :json} do 
     resource :session, only: [:create, :destroy]
+    resources :topics
   end
 
   # resources :topics do 
